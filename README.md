@@ -1,4 +1,4 @@
-# Propriedades da aplicaçao
+# Propriedades da aplicação
 
 Este foi um projeto com um servidor rest em codeigniter 3, com um client em Vue.js e axios juntamente com banco de dados MySQL.
 
