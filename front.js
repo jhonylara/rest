@@ -1,7 +1,3 @@
-// AUTOR: Jhony Lara
-// DATA: 13/03/2019
-// https://www.linkedin.com/in/jhonylara/
-// "Sempre achei que o tempo não passava, hoje me arrependo de o tempo ter passado." 
 var app = new Vue({
     el: "#root",
     data: {

@@ -10,6 +10,8 @@ Este foi um projeto com um servidor rest em codeigniter 3, com um client em Vue.
 
 Baixar o projeto do repositorio ou zip e colocar na pasta no servidor ex.: (apache)
 
+- git clone https://github.com/jhonylara/rest.git
+
 Criar o banco de dados no MySQL com o script abaixo:
 
     CREATE DATABASE restful;
