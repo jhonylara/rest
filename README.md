@@ -3,12 +3,12 @@
 Este foi um projeto com um servidor rest em codeigniter 3, com um client em Vue.js e axios juntamente com banco de dados MySQL.
 
 - Foi um projeto rápido, nunca tive contato com Vue.js e axios, e muito pouco com aplicações rest, provavelmente não segui o framework padrão do vue.
-- Tive muitas dificuldades com o client, devido a inexperiencia, e não saber oque ele é capaz de fazer.
+- Tive muitas dificuldades com a elaboração do client, devido a inexperiência, e não saber oque ele é capaz de fazer.
 - Estou satisfeito com o resultado, é uma aplicação funcional (Mesmo com todos os remendos) mostrou que sou capaz de me superar.
 
 ## Configurações do ambiente
 
-Baixar o projeto do repositorio ou zip e colocar na pasta no servidor ex.: (apache)
+Baixar o projeto do repositório ou zip e colocar na pasta no servidor ex.: (wamp, /www)
 
 Criar o banco de dados no MySQL com o script abaixo:
 
@@ -64,39 +64,39 @@ http://localhost/rest/front.html
 `
 
 Perfil não autenticado
-  - Serão exibidos usuarios ocultos 
+  - Serão exibidos usuários ocultos 
   - Não é exibida pesquisa
-  - Pode cadastrar usuarios
+  - Pode cadastrar usuários
   - Pode logar
 
 Logar username = 'user', senha = 'user'
-  - Serão exibidos usuarios sem ocultar
+  - Serão exibidos usuários sem ocultar
   - Pode alterar somente ele
   - Pode deletar somente ele, se deletado é deslogado
-  - Pode inserir usuarios
+  - Pode inserir usuários
   - Pode listar por nome ou id
 
 Logar username = 'admin', senha = 'admin'
   - Serão exibidos usuarios sem ocultar
   - Pode alterar todos
   - Pode deletar todos
-  - Pode inserir usuarios
+  - Pode inserir usuários
   - Pode listar por nome ou id
 
 
 ## Teste com postman
 
-Caso queira é possivel efetuar testes com o postman.
+Caso queira é possível efetuar testes com o postman.
 
-Baixe o collction do postman dentro da pasta rest
+Importe para o postman o arquivo TesteRestfull.postman_collection que está dentro da pasta rest
 
-Caso a configuração esteja em um lugar diferente do virtual host configure a url da requisição
+Caso a configuração esteja em um lugar diferente do `localhost/rest` configure a url da requisição
 
 `
 http://(VIRTUAL HOST OU CAMINHO DO SERVIDOR)/(rest [CASO VH NÃO APONTE A PASTA])/api/usuarios
 `
 
-O projeto passa por parametro uma chave = "chave" valor = "jhony12ed21d1t14"
+O projeto passa por parâmetro uma chave = "chave" valor = "jhony12ed21d1t14"
 
 
 
@@ -133,11 +133,11 @@ O projeto passa por parametro uma chave = "chave" valor = "jhony12ed21d1t14"
 
 ### Apontamentos
 
-Não foram feitas validações de formulario, infelizmente não consegui.
+Não foram feitas validações de formulário, infelizmente não consegui.
 Não consegui atualizar componentes devido a isso foi feito em somente uma pagina
-Utilizei muitas variaveis do navegador para persistir dados durante a atualização da pagina
+Utilizei muitas variáveis do navegador para persistir dados durante a atualização da pagina
 Não efetuei a devida autenticação com o rest 
-Como não sabia se eu poderia criar outras databases ou campos, segui o escopo proposto e efetuei a solução que achei possivel com meus conhecimentos
+Como não sabia se eu poderia criar outras databases ou campos, segui o escopo proposto e efetuei a solução que achei possível com meus conhecimentos
 Os perfis são traçados pelo username "admin", somente ele tem o perfil geral.
 Não trabalhei corretamente com o framework vue.js, não tinha conhecimento algum desse modelo de programação
 Não consegui usar outros métodos como put com o axios
