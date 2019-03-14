@@ -52,8 +52,25 @@ Caso o endereço não seja o localhost padrão, ou foi criado um virtual host pa
 rest/front.js
 `
 
-    EX: axios.post("http://(VIRTUAL HOST OU CAMINHO DO SERCDOR)/(rest [CASO VH NAO APONTE A PASTA])/api/usuarios", form_data).then(function(response){
+Exemplo padrao
 
+`
+    EX: axios.post("http://localhost/rest/api/usuarios", form_data).then(function(response){
+`
+
+Exemplo usando um servidor ou virtual host sem apontar a pasta rest:
+
+`
+    EX: axios.post("http://(endereço do servidor)/rest/api/usuarios", form_data).then(function(response){
+`
+
+Exemplo caso tenha criado um virtual host apontando a pasta rest:
+
+`
+    EX: axios.post("http://(virtual host)/api/usuarios", form_data).then(function(response){
+`
+
+#### Caso a configuração tenha sido efetuada com sucesso e os usuarios base foram incluidos, ao acessar o client devera estár listando 2 usuarios
 
 ## Utilização
 
@@ -61,6 +78,18 @@ Acessar o link
 
 `
 http://localhost/rest/front.html
+`
+
+Caso utilize um servidor ou virtual host sem apontar a pasta rest:
+
+`
+http://(endereço do servidor)/rest/front.html
+
+`
+Caso tenha criado um virtual host apontando a pasta rest:
+`
+
+http://(virtual host)/front.html
 `
 
 Perfil não autenticado
