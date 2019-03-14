@@ -46,11 +46,7 @@ rest/application/config/database.php
     'dbdriver' => 'mysqli', - driver padrao
 
 
-Caso o endereço não seja o localhost padrão, ou foi criado um virtual host para o servidor altere ele nas funções 
-
-`
-rest/front.js
-`
+#### Caso o endereço não seja o localhost padrão, ou foi criado um virtual host para o servidor altere TODAS AS FUNÇÕES no arquivo  `rest/front.js` conforme abaixo:
 
 Exemplo padrao
 
