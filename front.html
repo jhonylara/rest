@@ -1,0 +1,255 @@
+<!-- 
+    AUTOR: Jhony Lara
+    DATA: 13/03/2019
+    https://www.linkedin.com/in/jhonylara/
+    "Sempre achei que o tempo não passava, hoje me arrependo de o tempo ter passado." 
+-->
+<!DOCTYPE html>
+<html style="background-color: #e9ecef;">
+    <head>
+        <title>TESTE - SPRO</title>
+        <link rel='stylesheet' href='http://unpkg.com/bootstrap/dist/css/bootstrap.min.css'>
+        <link rel='stylesheet' href='http://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css'>
+    </head>  
+    <body>
+        <div id="root" style="background-color: #e9ecef;">
+            <!--NAVBAR-->
+            <div>
+                <b-navbar type="dark" variant="dark">
+                    <b-navbar-nav>
+                        <b-nav-item href="#" >CRUD - Vue.js e Codeigniter REST - Jhony Lara </b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto" v-if="localStorage.logado != 'nao'">
+                        <b-navbar-nav>
+                            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Pesquisar" v-model="pesquisaNome" />
+                        </b-navbar-nav>
+                        <b-navbar-nav>
+                            <b-button size="sm" class="my-2 my-sm-0" @click.prevent="filtrarUsuarios()" >Pesquisar</b-button>
+                        </b-navbar-nav>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item href="#" v-if="localStorage.nome != ''" value="localStorage.nome">{{localStorage.nome}}</b-nav-item>
+                        <b-nav-item href="#" v-if="localStorage.nome == ''" value="localStorage.nome">visitante</b-nav-item>
+                        <b-button size="sm" variant="success" v-if="localStorage.logado == 'nao'" class="my-2 my-sm-0" v-b-modal="'modalLogin'">LOGAR</b-button>
+                        <b-button size="sm" variant="danger" v-on:click="sairLogin" v-if="localStorage.logado != 'nao'" class="my-2 my-sm-0">SAIR</b-button>
+                        <p>&nbsp</p>
+                        <b-button size="sm" class="my-2 my-sm-0" v-b-modal="'modalAdicionar'">NOVO USUARIO</b-button>
+                    </b-navbar-nav>
+                </b-navbar>
+            <!--DIV COM ERROS OU SUCESSO-->
+            </div>
+            <div v-if="localStorage.logado == 'nao'">
+                <b-alert show variant="danger"><h3>Usuário não logado, favor efetuar login</h3></b-alert>
+            </div>
+            <div v-if="localStorage.erro == 'true'">
+                <b-alert show variant="danger">
+                    <h3>
+                        {{localStorage.mensagemErro}}
+                        <b-button size="sm" variant="danger" class="my-2 my-sm-0"v-on:click="fecharAvisos">X</b-button>
+                    </h3>
+                </b-alert>
+            </div>
+            <div v-if="localStorage.sucesso == 'true'">
+                <b-alert show variant="success">
+                    <h3>
+                        {{localStorage.mensagemSucesso}} 
+                        <b-button size="sm" variant="success" class="my-2 my-sm-0"v-on:click="fecharAvisos">X</b-button>
+                    </h3>
+                </b-alert>
+            </div>
+            <!--TABELA COM OS USUARIOS-->
+            <div style="margin: 10px 20px 10px 20px" >
+                <h3>Usuarios:</h3>            
+                <div>
+                    <b-table>
+                        <template slot="thead-top" slot-scope="data">
+                            <tr>
+                                <th>ID</th>
+                                <th>EMAIL</th>
+                                <th>NOME</th>
+                                <th>USERNAME</th>
+                                <th>DATA CADASRO</th>
+                                <th>ALTERAR</th>
+                                <th>DELETAR</th>
+                            </tr>
+                            <tr v-for="usuario in usuarios">
+                                <td>{{usuario.id}}</td>
+                                <td>{{usuario.email}}</td>
+                                <td>{{usuario.nome}}</td>
+                                <td>{{usuario.username}}</td>
+                                <td>{{usuario.data_criacao}}</td>
+                                <td><b-button v-if="localStorage.logado == 'admin'  || (usuario.username == localStorage.username && localStorage.logado != 'nao')" variant="primary" v-b-modal="'modalEditar'" @click.prevent="selecionaUsuario(usuario)">Alterar</b-button></td>
+                                <td><b-button v-if="localStorage.logado == 'admin' || (usuario.username == localStorage.username && localStorage.logado != 'nao')" variant="danger" v-b-modal="'modalConfirmarExclusao'" @click.prevent="selecionaUsuario(usuario)">Deletar</b-button></td>
+                            </tr>
+                        </template>
+                    </b-table>
+                 </div>
+            </div>
+            <!--MODAL DE ADICIONAR USUARIOS-->
+            <div>
+                <b-modal id="modalAdicionar" title="Adicionar novo usuario" hide-footer="true">
+                    <b-container fluid>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="email">Email:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="email" :state="null" type="text" v-model="novoUsuario.email" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="nome">Nome:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="nome" :state="null" type="text" v-model="novoUsuario.nome" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="email">Username:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="username" :state="null" type="text" v-model="novoUsuario.username" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="email">Senha:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="senha" :state="null" type="password" v-model="novoUsuario.senha" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row class="ml-auto">
+                            <b-col sm="9">
+                            </b-col>
+                            <b-col sm="3">
+                                <b-button  variant="success" @click.prevent="incluirUsuario();">Salvar</b-button>
+                            </b-col>
+                        </b-row>                
+                    </b-container>
+                </b-modal>
+            </div>
+            <!--MODAL DE EDITAR USUARIOS-->
+            <div>
+                <b-modal id="modalEditar" title="Editar Usuario" hide-footer="true">
+                    <b-container fluid>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="edtEmail">Email:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="edtEmail" :state="null" type="text" v-model="usuarioSel.email" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="edtNome">Nome:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="edtNome" :state="null" type="text" v-model="usuarioSel.nome" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="edtUsername">Username:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="edtUsername" :state="null" type="text" v-model="usuarioSel.username" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="emailedtSenha">Senha:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="edtSenha" :state="null" type="password" v-model="usuarioSel.senha" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row class="ml-auto">
+                            <b-col sm="9">
+                            </b-col>
+                            <b-col sm="3">
+                                <b-button  variant="success" @click.prevent="alterarUsuario();">Alterar</b-button>
+                            </b-col>
+                        </b-row>                
+                    </b-container>
+                </b-modal>
+            </div>
+            <!--MODAL DE EFETUAR LOGIN-->
+            <div>
+                <b-modal id="modalLogin" title="Efetuar Login" hide-footer="true">
+                    <b-container fluid>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="logUsuario">Username:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="logUsuario" :state="null" type="text" v-model="loginUsuario" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row>
+                            <b-col sm="3">
+                                <label for="logSenha">Nome:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="logSenha" :state="null" type="password" v-model="loginSenha" />
+                            </b-col>
+                        </b-row><br/>
+                        <b-row class="ml-auto">
+                            <b-col sm="9">
+                            </b-col>
+                            <b-col sm="3">
+                                <b-button variant="success" @click.prevent="validarLogin();">LOGIN</b-button>
+                            </b-col>
+                        </b-row>                
+                    </b-container>
+                </b-modal>
+            </div>
+            <!--MODAL DE CONFIRMAR EXCLUSAO-->
+            <div>
+                <b-modal id="modalConfirmarExclusao" title="Apagar usuario" hide-footer="true">
+                    <b-container fluid>
+                        <b-row>
+                            <b-col sm="23">
+                                <p>Confirmar exclusão:</p>
+                            </b-col>
+                        </b-row><br/>
+                        <b-row class="ml-auto">
+                            <b-col sm="8">
+                            </b-col>
+                            <b-col sm="2">
+                                <b-button variant="success" @click.prevent="deletarUsuario();">SIM</b-button>
+                            </b-col>
+                            <b-col sm="2">
+                                <b-button variant="danger">NÃO</b-button>
+                            </b-col>
+                        </b-row>            
+                    </b-container>
+                </b-modal>
+            </div>
+            <!--BOTÃO LINKEDIN-->
+            <div style="  position: fixed;
+                          left: 0px;
+
+                          bottom: 100px;
+                          width: 100%;
+                          text-align: center;">
+                <b-button variant="primary" class="btn-secondary" disabled style="float: right;margin-right: 60px;">
+                    <b-spinner small type="grow"></b-spinner>
+                     <b-link  style="float: right; color: white;" target='_blank' href="https://www.linkedin.com/in/jhonylara/">&nbsp /in/jhonylara/</b-link>
+                  </b-button>
+                </div>
+               
+            </div>
+        </div>
+        <!--IMPORTS-->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+        <script src='http://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js'></script>
+        <script src='http://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js'></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>-->
+        <script  src="front.js"></script>
+    </body>
+</html> 
